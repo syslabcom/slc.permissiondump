@@ -24,9 +24,8 @@ NOTE: specifying the output directory is optional, it defaults to directory
 "output" in the same directory from where the script is run.
 Plone site name is optional as well and defaults to "Plone".
 
-To generate HTML tree view run the following:
+To generate HTML tree view run the following::
 
-::
     $ bin/instance html_export --output-dir OUTDIR
 
 The OUTDIR, if specified, must refer to the same output directory that was
