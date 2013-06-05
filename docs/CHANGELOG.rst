@@ -1,8 +1,14 @@
 Changelog
 =========
 
+0.2 (Unreleased)
+----------------
 
-0.1 (unreleased)
+- Nicer README.
+  [plamut]
+
+
+0.1 (2013-06-05)
 ----------------
 
 - Initial release.
