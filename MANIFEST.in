@@ -1,0 +1,2 @@
+graft slc.permissiondump
+include *.cfg *.rst *.in *.js *.css LICENSE
