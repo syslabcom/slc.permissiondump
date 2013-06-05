@@ -1,5 +1,5 @@
-Osha permission dump
-====================
+Visualize a tree of local roles assigned on Plone items
+=======================================================
 
 NOTE: this package is still in beta and has not been thoroughly tested yet
 
