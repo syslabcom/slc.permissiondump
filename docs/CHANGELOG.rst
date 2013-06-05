@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.2 (Unreleased)
+0.2 (2013-06-05)
 ----------------
 
 - Nicer README.
