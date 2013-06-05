@@ -1,9 +1,16 @@
-Visualize a tree of local roles assigned on Plone items.
+slc.permissiondump
+==================
+
+Walk the Plone portal and dump the list of local roles for each item. Then
+go through the dump and generate a nice HTML visualization of the tree of
+items with their assigned local roles.
+
 
 INSTALL
 =======
 
 Add this egg to buildout's egg list and run the buildout.
+
 
 USAGE
 =====
