@@ -8,14 +8,12 @@ Add this egg to buildout's egg list and run the buildout.
 USAGE
 =====
 
-For usage description run the following:
+For usage description run the following::
 
-::
     $ bin/instance dump_roles --help
 
-To dump roles to a file, run the following:
+To dump roles to a file, run the following::
 
-::
     $ bin/instance dump_roles --output-dir OUTDIR --portal-name PORTAL
 
 This command dumps permissions from Plone site PORTAL to a file called
