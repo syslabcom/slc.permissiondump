@@ -2,7 +2,7 @@ Changelog
 =========
 
 0.2.1 (2013-08-23)
-----------------
+------------------
 
 - Fix: dump objects' inherited roles as well (instead of just local roles)
   [plamut]
@@ -20,3 +20,4 @@ Changelog
 
 - Initial release.
   [ibi, plamut, zupo]
+
