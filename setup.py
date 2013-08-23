@@ -19,7 +19,7 @@ long_description = \
 
 setup(
     name='slc.permissiondump',
-    version='0.3.dev0',
+    version='0.2.1',
     description="Visualize a tree of local roles assigned on Plone items.",
     long_description=long_description,
     classifiers=[
