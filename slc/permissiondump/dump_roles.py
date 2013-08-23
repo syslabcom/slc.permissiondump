@@ -10,30 +10,40 @@ import json
 import os
 
 
-def get_local_roles(node):
+def get_local_roles(node, p_utils):
     """Recursive generator which traverses the database and yields local
     roles for all objects.
 
     :param node: current object in the tree
+    :param p_utils: the plone utils tool
     """
-    yield json.dumps({node.absolute_url(): node.get_local_roles()})
+    roles = p_utils.getInheritedLocalRoles(node)
+
+    # NOTE: we don't use dict comprehension to retain compatibilty w/ py2.6
+    roles_info = {}
+    for item in roles:
+        key = '{0[2]} {0[3]}'.format(item)
+        roles_info[key] = item[1]
+
+    yield json.dumps({node.absolute_url(): roles_info})
 
     if IFolderish.providedBy(node):
         children = node.listFolderContents()
 
         for child in children:
-            for obj in get_local_roles(child):
+            for obj in get_local_roles(child, p_utils):
                 yield obj
 
 
-def export_local_roles(portal, roles_file):
+def export_local_roles(portal, p_utils, roles_file):
     """Export local roles to a text file.
 
     :param portal: portal object to export the roles for
+    :param p_utils: the plone utils tool
     :param roles_file: full filename of the file to dump roles to
     """
     with open(roles_file, 'w') as f:
-        for line in get_local_roles(portal):
+        for line in get_local_roles(portal, p_utils):
             f.write(line + '\n')
     print 'Roles export complete.'
 
@@ -77,5 +87,6 @@ def main(app, cmd_args):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
+    p_utils = app[portal_name].plone_utils
     roles_file = os.path.join(output_dir, ROLES_DUMP)
-    export_local_roles(app[portal_name], roles_file)
+    export_local_roles(app[portal_name], p_utils, roles_file)
