@@ -1,8 +1,0 @@
-{"http://nohost/Plone": [["admin", ["Owner"]]]}
-{"http://nohost/Plone/front-page": [["admin", ["Owner"]]]}
-{"http://nohost/Plone/news": [["admin", ["Owner"]]]}
-{"http://nohost/Plone/news/aggregator": [["admin", ["Owner"]]]}
-{"http://nohost/Plone/events": [["admin", ["Owner"]]]}
-{"http://nohost/Plone/events/aggregator": [["admin", ["Owner"]]]}
-{"http://nohost/Plone/events/aggregator/sub-aggregator": [["admin", ["Owner"]]]}
-{"http://nohost/Plone/Members": [["admin", ["Owner"]]]}
