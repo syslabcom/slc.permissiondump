@@ -16,7 +16,16 @@ def get_local_roles(node):
 
     :param node: current object in the tree
     """
-    yield json.dumps({node.absolute_url(): node.get_local_roles()})
+    local_roles = node.get_local_roles()
+    filtered_user_roles =[]
+    for user_role in local_roles:
+        user_roles = []
+        for role in user_role[1]:
+            if role != 'Owner':
+                user_roles.append(role)
+        if user_roles != []:
+            filtered_user_roles.append([user_role[0], user_roles])
+    yield json.dumps({node.absolute_url(): filtered_user_roles})
 
     if IFolderish.providedBy(node):
         children = node.listFolderContents()
@@ -24,6 +33,7 @@ def get_local_roles(node):
         for child in children:
             for obj in get_local_roles(child):
                 yield obj
+
 
 
 def export_local_roles(portal, roles_file):
