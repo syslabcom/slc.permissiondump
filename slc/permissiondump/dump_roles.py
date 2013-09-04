@@ -28,6 +28,11 @@ def get_local_roles(node):
     if filtered_user_roles != []:
         yield json.dumps({node.absolute_url(): filtered_user_roles})
 
+    block_roles = bool(getattr(node, "__ac_local_roles_block__", None))
+    yield json.dumps({node.absolute_url(): [
+        "roles_block" if block_roles else "roles_inherit"
+    ]})
+
     if IFolderish.providedBy(node):
         children = node.listFolderContents()
 
