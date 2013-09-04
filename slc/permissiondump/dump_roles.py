@@ -25,7 +25,8 @@ def get_local_roles(node):
                 user_roles.append(role)
         if user_roles != []:
             filtered_user_roles.append([user_role[0], user_roles])
-    yield json.dumps({node.absolute_url(): filtered_user_roles})
+    if filtered_user_roles != []:
+        yield json.dumps({node.absolute_url(): filtered_user_roles})
 
     if IFolderish.providedBy(node):
         children = node.listFolderContents()
