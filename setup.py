@@ -43,6 +43,7 @@ setup(
     entry_points="""
     [zopectl.command]
     dump_roles = slc.permissiondump.dump_roles:main
+    dump_roles_extra = slc.permissiondump.dump_roles_extra:main
     html_export = slc.permissiondump.html_export:main
     """,
     include_package_data=True,
