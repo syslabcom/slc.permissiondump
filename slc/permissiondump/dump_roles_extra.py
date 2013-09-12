@@ -31,34 +31,31 @@ def get_local_roles(node, root=False):
 
     :param node: current object in the tree
     """
-    global cnt
-    local_roles = node.get_local_roles()
-    filtered_user_roles = filter_roles(local_roles)
-    inherit_roles = int(not getattr(node, "__ac_local_roles_block__", None))
-    if cnt and cnt % 1000 == 0:
-        log.warning('Dumped %d lines' % cnt) 
-#    for user_role in local_roles:
-#        user_roles = []
-#        for role in user_role[1]:
-#            if role != 'Owner':
-#                user_roles.append(role)
-#        if user_roles != []:
-#            filtered_user_roles.append([user_role[0], user_roles])
-    # If we don't inherit roles, but have the same roles as the parent,
-    # consider this equivalent to inheritance
-    if not root:
-        parent = aq_parent(node)
-        parent_roles = filter_roles(parent.get_local_roles())
-        # if the permissions are different, then we assume not inheriting was done for a reason
-        if parent_roles != filtered_user_roles:
-            identical = 0
+    if node.portal_type in ['Folder']:
+        global cnt
+        local_roles = node.get_local_roles()
+        filtered_user_roles = filter_roles(local_roles)
+        inherit_roles = int(not getattr(node, "__ac_local_roles_block__", None))
+        if cnt and cnt % 1000 == 0:
+            log.warning('Dumped %d lines' % cnt) 
+        # If we don't inherit roles, but have the same roles as the parent,
+        # consider this equivalent to inheritance
+        identical = 0
+        if not root:
+            parent = aq_parent(node)
+            parent_roles = filter_roles(parent.get_local_roles())
+            # if the permissions are different, then we assume not inheriting was done for a reason
+            if parent_roles == filtered_user_roles:
+                identical = 1
+        if filtered_user_roles == []:
+            local_settings = 0
         else:
-            identical = 1
-    if filtered_user_roles != []:
+            local_settings = 1
         path = node.getPhysicalPath()
         yield json.dumps({
-            '/'.join(path): filtered_user_roles, 'inherit': inherit_roles,
-            'same_as_parent': identical, 'level': len(path) - 2})
+            '/'.join(path): filtered_user_roles, 'inherit': inherit_roles, 'type': node.portal_type,
+            'same_as_parent': identical, 'level': len(path) - 2, 'local_settings': local_settings,
+        })
         cnt += 1
 
     if IFolderish.providedBy(node):
