@@ -2,6 +2,7 @@
 
 from Acquisition import aq_parent
 from Products.CMFCore.interfaces import IFolderish
+from plone.dexterity.interfaces import IDexterityContainer
 from slc.permissiondump import PORTAL_NAME
 from slc.permissiondump import OUTPUT_DIR
 from slc.permissiondump import ROLES_DUMP
@@ -31,34 +32,34 @@ def get_local_roles(node, root=False):
 
     :param node: current object in the tree
     """
-    if node.portal_type in ['Folder']:
-        global cnt
-        local_roles = node.get_local_roles()
-        filtered_user_roles = filter_roles(local_roles)
-        inherit_roles = int(not getattr(node, "__ac_local_roles_block__", None))
-        if cnt and cnt % 1000 == 0:
-            log.warning('Dumped %d lines' % cnt) 
-        # If we don't inherit roles, but have the same roles as the parent,
-        # consider this equivalent to inheritance
-        identical = 0
-        if not root:
-            parent = aq_parent(node)
-            parent_roles = filter_roles(parent.get_local_roles())
-            # if the permissions are different, then we assume not inheriting was done for a reason
-            if parent_roles == filtered_user_roles:
-                identical = 1
-        if filtered_user_roles == []:
-            local_settings = 0
-        else:
-            local_settings = 1
-        path = node.getPhysicalPath()
-        yield json.dumps({
-            '/'.join(path): filtered_user_roles, 'inherit': inherit_roles, 'type': node.portal_type,
-            'same_as_parent': identical, 'level': len(path) - 2, 'local_settings': local_settings,
-        })
-        cnt += 1
 
-    if IFolderish.providedBy(node):
+    global cnt
+    local_roles = node.get_local_roles()
+    filtered_user_roles = filter_roles(local_roles)
+    inherit_roles = int(not getattr(node, "__ac_local_roles_block__", None))
+    if cnt and cnt % 1000 == 0:
+        log.warning('Dumped %d lines' % cnt)
+    # If we don't inherit roles, but have the same roles as the parent,
+    # consider this equivalent to inheritance
+    identical = 0
+    if not root:
+        parent = aq_parent(node)
+        parent_roles = filter_roles(parent.get_local_roles())
+        # if the permissions are different, then we assume not inheriting was done for a reason
+        if parent_roles == filtered_user_roles:
+            identical = 1
+    if filtered_user_roles == []:
+        local_settings = 0
+    else:
+        local_settings = 1
+    path = node.getPhysicalPath()
+    yield json.dumps({
+        '/'.join(path): filtered_user_roles, 'inherit': inherit_roles, 'type': node.portal_type,
+        'same_as_parent': identical, 'level': len(path) - 2, 'local_settings': local_settings,
+    })
+    cnt += 1
+
+    if IDexterityContainer.providedBy(node):
         children = node.listFolderContents()
 
         for child in children:
